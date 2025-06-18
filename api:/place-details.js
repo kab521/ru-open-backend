@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   const placeId = req.query.place_id;
-  const API_KEY = 'key';
+  const API_KEY = 'AIzaSyBQ8PUxKwkdLUyIaDQyMDCLUIRRm0gL7yw';
 
   if (!placeId) {
     res.status(400).send('Missing place_id');
