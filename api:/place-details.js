@@ -1,17 +1,21 @@
 import fetch from 'node-fetch';
 
-export async function handler(event) {
-  const placeId = event.queryStringParameters.place_id;
-  const API_KEY = 'howdy';  
+export default async function handler(req, res) {
+  const placeId = req.query.place_id;
+  const API_KEY = 'key';
 
   if (!placeId) {
-    return { statusCode: 400, body: 'Missing place_id' };
+    res.status(400).send('Missing place_id');
+    return;
   }
 
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=hello&fields=opening_hours&key=howdy`;
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=opening_hours&key=${API_KEY}`;
 
-  const response = await fetch(url);
-  const data = await response.json();
-
-  return { statusCode: 200, body: JSON.stringify(data) };
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).send('Error fetching place details');
+  }
 }
